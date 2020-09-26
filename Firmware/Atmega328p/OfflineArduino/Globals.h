@@ -20,7 +20,7 @@ I/O pins setup
 Constants
 ===============
 */
-#define MAX_TIMER_INTERRUPTS 8 // 99.84 ms interrupts ~ 100 ms interrupts
+#define MAX_TIMER_INTERRUPTS 20 // 249.6 ms interrupts ~ 250 ms interrupts
 
 
 
@@ -31,15 +31,15 @@ PID-related
 ===============
 */
 
-#define KP 3.0
-#define KI 1.5
-#define KD 0.5
+#define KP 1.5
+#define KI 0.5
+#define KD 0.0
 
-#define MOTOR_MAX 100
+#define MOTOR_MAX 255
 #define MOTOR_MIN 0
 
 #define SETPOINT_MAX 20
-#define SETPOINT_MIN 5
+#define SETPOINT_MIN 1
 
 #endif
 

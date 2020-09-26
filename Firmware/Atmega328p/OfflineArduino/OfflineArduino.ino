@@ -34,7 +34,7 @@ void setup(){
     Serial.begin(115200);
 
     //Change default PWM frequency (Timer 1)
-    TCCR0B = TCCR0B & B11111000 | B00000001;
+    //TCCR0B = TCCR0B & B11111000 | B00000001;
     
     pinMode(PIN_FLOW_SENSOR_INPUT, INPUT_PULLUP);
     pinMode(PIN_WATER_PUMP, OUTPUT);
@@ -45,8 +45,6 @@ void setup(){
     pinMode(LED_BUILTIN, OUTPUT);
 
     
-    Timer2Setup();
-    attachInterrupt(digitalPinToInterrupt(PIN_FLOW_SENSOR_INPUT), countISR, CHANGE);
 
     digitalWrite(PIN_WATER_PUMP, 0); //Disable water pump by default
     
@@ -70,16 +68,21 @@ void setup(){
 
     controller.resetIDvalues();
     controller.pidSetPoint(pidSetPoint);
+
+    Timer2Setup();
+    attachInterrupt(digitalPinToInterrupt(PIN_FLOW_SENSOR_INPUT), countISR, CHANGE);
 }
 
 void loop(){
-  delay(100);
-  Serial.println(avgCount);
+  delay(MAX_TIMER_INTERRUPTS*100/8);
+  Serial.print(avgCount);
 
   pidOutput = (int)controller.pidUpdate(avgCount);
 
   analogWrite(PIN_WATER_PUMP, pidOutput);
 
+  Serial.print(", ");
+  Serial.println(pidOutput);
 
   //If a new set point is meant to be set, press push button
   while(!digitalRead(PIN_SETPOINT_ADJ_BUTTON)){
